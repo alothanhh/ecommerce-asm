@@ -105,17 +105,16 @@ const Products = () => {
                   {/* <li className="list-group-item">Dapibus ac facilisis in</li>
                     <li className="list-group-item">Vestibulum at eros</li> */}
                 </ul>
-                <div className="card-body">
-                  <Link to={"/product/" + product.id} className="btn btn-dark m-1">
-                    Mua ngay
+                <div className="card-body d-flex">
+                  <Link to={"/product/" + product.id} className="btn btn-dark flex-grow-1 m-1">
+                    <i className="fas fa-shopping-cart me-2"></i>Mua ngay
                   </Link>
-                  <button className="btn btn-dark m-1" onClick={() => addProduct(product)}>
-                    Thêm vào giỏ hàng
+                  <button className="btn btn-dark flex-grow-1 m-1" onClick={() => addProduct(product)}>
+                    <i className="fas fa-cart-plus me-2"></i>Thêm vào giỏ hàng
                   </button>
                 </div>
               </div>
             </div>
-
           );
         })}
       </>
