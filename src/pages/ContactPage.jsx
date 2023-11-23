@@ -5,18 +5,19 @@ const ContactPage = () => {
     <>
       <Navbar />
       <div className="container my-3 py-3">
-        <h1 className="text-center">Contact Us</h1>
+        <h1 className="text-center">Liên hệ với chúng tôi</h1>
         <hr />
+        <h5 className="text-center fs-5 weight-light">Hãy để lại thông tin liên lạc và kèm lời nhắn nhủ của bạn </h5>
         <div class="row my-4 h-100">
           <div className="col-md-4 col-lg-4 col-sm-8 mx-auto">
             <form>
               <div class="form my-3">
-                <label for="Name">Name</label>
+                <label for="Name">Họ và tên</label>
                 <input
                   type="email"
                   class="form-control"
                   id="Name"
-                  placeholder="Enter your name"
+                  placeholder="Nhập họ và tên bạn "
                 />
               </div>
               <div class="form my-3">
@@ -25,16 +26,16 @@ const ContactPage = () => {
                   type="email"
                   class="form-control"
                   id="Email"
-                  placeholder="name@example.com"
+                  placeholder="name@gmail.com"
                 />
               </div>
               <div class="form  my-3">
-                <label for="Password">Message</label>
+                <label for="Password">Lời nhắn nhủ</label>
                 <textarea
                   rows={5}
                   class="form-control"
                   id="Password"
-                  placeholder="Enter your message"
+                  placeholder="Nhập lời nhắn nhủ"
                 />
               </div>
               <div className="text-center">
@@ -43,7 +44,7 @@ const ContactPage = () => {
                   type="submit"
                   disabled
                 >
-                  Send
+                  Gửi
                 </button>
               </div>
             </form>

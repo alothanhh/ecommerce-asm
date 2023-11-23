@@ -73,7 +73,7 @@ const Products = () => {
     return (
       <>
         <div className="buttons text-center py-5">
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => setFilter(data)}>All</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => setFilter(data)}>Tất cả</button>
           <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("men's clothing")}>Men's Clothing</button>
           <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("women's clothing")}>
             Women's Clothing
@@ -101,21 +101,20 @@ const Products = () => {
                   </p>
                 </div>
                 <ul className="list-group list-group-flush">
-                  <li className="list-group-item lead">$ {product.price}</li>
+                  <li className="list-group-item lead"> {product.price} đ</li>
                   {/* <li className="list-group-item">Dapibus ac facilisis in</li>
                     <li className="list-group-item">Vestibulum at eros</li> */}
                 </ul>
-                <div className="card-body">
-                  <Link to={"/product/" + product.id} className="btn btn-dark m-1">
-                    Buy Now
+                <div className="card-body d-flex">
+                  <Link to={"/product/" + product.id} className="btn btn-dark flex-grow-1 m-1">
+                    <i className="fas fa-shopping-cart me-2"></i>Mua ngay
                   </Link>
-                  <button className="btn btn-dark m-1" onClick={() => addProduct(product)}>
-                    Add to Cart
+                  <button className="btn btn-dark flex-grow-1 m-1" onClick={() => addProduct(product)}>
+                    <i className="fas fa-cart-plus me-2"></i>Thêm vào giỏ hàng
                   </button>
                 </div>
               </div>
             </div>
-
           );
         })}
       </>
@@ -126,7 +125,7 @@ const Products = () => {
       <div className="container my-3 py-3">
         <div className="row">
           <div className="col-12">
-            <h2 className="display-5 text-center">Latest Products</h2>
+            <h2 className="display-5 text-center">Sản phẩm mới nhất</h2>
             <hr />
           </div>
         </div>

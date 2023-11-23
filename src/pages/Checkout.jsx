@@ -10,9 +10,9 @@ const Checkout = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-12 py-5 bg-light text-center">
-            <h4 className="p-3 display-5">No item in Cart</h4>
+            <h4 className="p-3 display-5">Không có mặt hàng nào cần thanh toán</h4>
             <Link to="/" className="btn btn-outline-dark mx-4">
-              <i className="fa fa-arrow-left"></i> Continue Shopping
+              <i className="fa fa-arrow-left"></i> Tiếp tục mua sắm
             </Link>
           </div>
         </div>
@@ -38,23 +38,23 @@ const Checkout = () => {
             <div className="col-md-5 col-lg-4 order-md-last">
               <div className="card mb-4">
                 <div className="card-header py-3 bg-light">
-                  <h5 className="mb-0">Order Summary</h5>
+                  <h5 className="mb-0">Thanh toán</h5>
                 </div>
                 <div className="card-body">
                   <ul className="list-group list-group-flush">
                     <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                      Products ({totalItems})<span>${Math.round(subtotal)}</span>
+                      Sản phẩm ({totalItems})<span>{Math.round(subtotal)} đ</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between align-items-center px-0">
-                      Shipping
-                      <span>${shipping}</span>
+                    Phí giao hàng
+                      <span>{shipping} đ</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                       <div>
-                        <strong>Total amount</strong>
+                        <strong>Tổng thanh toán</strong>
                       </div>
                       <span>
-                        <strong>${Math.round(subtotal + shipping)}</strong>
+                        <strong>{Math.round(subtotal + shipping)} đ</strong>
                       </span>
                     </li>
                   </ul>
@@ -64,14 +64,14 @@ const Checkout = () => {
             <div className="col-md-7 col-lg-8">
               <div className="card mb-4">
                 <div className="card-header py-3">
-                  <h4 className="mb-0">Billing address</h4>
+                  <h4 className="mb-0">Địa chỉ giao hàng</h4>
                 </div>
                 <div className="card-body">
                   <form className="needs-validation" novalidate>
                     <div className="row g-3">
                       <div className="col-sm-6 my-1">
                         <label for="firstName" className="form-label">
-                          First name
+                          Họ và tên
                         </label>
                         <input
                           type="text"
@@ -88,7 +88,7 @@ const Checkout = () => {
 
                       <div className="col-sm-6 my-1">
                         <label for="lastName" className="form-label">
-                          Last name
+                         Số điện thoại
                         </label>
                         <input
                           type="text"
@@ -111,7 +111,7 @@ const Checkout = () => {
                           type="email"
                           className="form-control"
                           id="email"
-                          placeholder="you@example.com"
+                          placeholder="you@gmail.com"
                           required
                         />
                         <div className="invalid-feedback">
@@ -122,13 +122,13 @@ const Checkout = () => {
 
                       <div className="col-12 my-1">
                         <label for="address" className="form-label">
-                          Address
+                         Địa chỉ giao hàng cụ thể
                         </label>
                         <input
                           type="text"
                           className="form-control"
                           id="address"
-                          placeholder="1234 Main St"
+                          placeholder="1234 KTX Khu A"
                           required
                         />
                         <div className="invalid-feedback">
@@ -138,7 +138,7 @@ const Checkout = () => {
 
                       <div className="col-12">
                         <label for="address2" className="form-label">
-                          Address 2{" "}
+                          Đường{" "}
                           <span className="text-muted">(Optional)</span>
                         </label>
                         <input
@@ -151,12 +151,12 @@ const Checkout = () => {
 
                       <div className="col-md-5 my-1">
                         <label for="country" className="form-label">
-                          Country
+                          Phường/Xã
                         </label>
                         <br />
                         <select className="form-select" id="country" required>
                           <option value="">Choose...</option>
-                          <option>India</option>
+                          <option>P. Linh Trung</option>
                         </select>
                         <div className="invalid-feedback">
                           Please select a valid country.
@@ -165,12 +165,12 @@ const Checkout = () => {
 
                       <div className="col-md-4 my-1">
                         <label for="state" className="form-label">
-                          State
+                          Quận/Huyện
                         </label>
                         <br />
                         <select className="form-select" id="state" required>
                           <option value="">Choose...</option>
-                          <option>Punjab</option>
+                          <option>TP.Thủ Đức</option>
                         </select>
                         <div className="invalid-feedback">
                           Please provide a valid state.
@@ -179,15 +179,12 @@ const Checkout = () => {
 
                       <div className="col-md-3 my-1">
                         <label for="zip" className="form-label">
-                          Zip
+                          Tỉnh/Thành phố
                         </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="zip"
-                          placeholder=""
-                          required
-                        />
+                        <select className="form-select" id="city" required>
+                          <option value="">Choose...</option>
+                          <option>TP.Hồ Chí Minh</option>
+                        </select>
                         <div className="invalid-feedback">
                           Zip code required.
                         </div>
@@ -196,7 +193,7 @@ const Checkout = () => {
 
                     <hr className="my-4" />
 
-                    <h4 className="mb-3">Payment</h4>
+                    <h4 className="mb-3">Phương thức thanh toán</h4>
 
                     <div className="row gy-3">
                       <div className="col-md-6">
@@ -288,7 +285,7 @@ const Checkout = () => {
     <>
       <Navbar />
       <div className="container my-3 py-3">
-        <h1 className="text-center">Checkout</h1>
+        <h1 className="text-center">Thông tin thanh toán</h1>
         <hr />
         {state.length ? <ShowCheckout /> : <EmptyCart />}
       </div>
