@@ -1,2 +1,2 @@
 # ecommerce-asm
-E-Commerce Assignment by CSE Connection: Souvenir
+E-Commerce Assignment by CSE Connection: Sourique Corner
