@@ -16,13 +16,15 @@ const Products = () => {
   const dispatch = useDispatch();
 
   const addProduct = (product) => {
-    dispatch(addCart(product))
-  }
+    dispatch(addCart(product));
+  };
 
   useEffect(() => {
     const getProducts = async () => {
       setLoading(true);
-      const response = await fetch("https://mocki.io/v1/4a7ee945-a8af-4e8c-bed3-9ce592c0544e");
+      const response = await fetch(
+        "http://localhost:8000/api/v1/productservice/product/"
+      );
       if (componentMounted) {
         setData(await response.clone().json());
         setFilter(await response.json());
@@ -66,43 +68,86 @@ const Products = () => {
   };
 
   const filterProduct = (cat) => {
-    const updatedList = data.filter((item) => item.category === cat);
+    const updatedList = data.filter((item) => item.category_id.name === cat);
     setFilter(updatedList);
-  }
+  };
   const ShowProducts = () => {
     return (
       <>
         <div className="buttons text-center py-5">
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => setFilter(data)}>Tất cả</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Bút")}>Bút</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Sổ tay")}>
+          <button
+            className="btn btn-outline-dark btn-sm m-2"
+            onClick={() => setFilter(data)}
+          >
+            Tất cả
+          </button>
+          <button
+            className="btn btn-outline-dark btn-sm m-2"
+            onClick={() => filterProduct("Bút")}
+          >
+            Bút
+          </button>
+          <button
+            className="btn btn-outline-dark btn-sm m-2"
+            onClick={() => filterProduct("Sổ tay")}
+          >
             Sổ tay
           </button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Kỷ niệm chương")}>Kỷ niệm chương</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Ly")}>Ly</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Túi vải")}>Túi vải</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Huy chương")}>Huy chương</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Móc khóa")}>Móc khóa</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Bình giữ nhiệt")}>Bình giữ nhiệt</button>
+          <button
+            className="btn btn-outline-dark btn-sm m-2"
+            onClick={() => filterProduct("Kỷ niệm chương")}
+          >
+            Kỷ niệm chương
+          </button>
+          <button
+            className="btn btn-outline-dark btn-sm m-2"
+            onClick={() => filterProduct("Ly")}
+          >
+            Ly
+          </button>
+          <button
+            className="btn btn-outline-dark btn-sm m-2"
+            onClick={() => filterProduct("Túi vải")}
+          >
+            Túi vải
+          </button>
+          <button
+            className="btn btn-outline-dark btn-sm m-2"
+            onClick={() => filterProduct("Huy chương")}
+          >
+            Huy chương
+          </button>
+          <button
+            className="btn btn-outline-dark btn-sm m-2"
+            onClick={() => filterProduct("Móc khóa")}
+          >
+            Móc khóa
+          </button>
+          <button
+            className="btn btn-outline-dark btn-sm m-2"
+            onClick={() => filterProduct("Bình giữ nhiệt")}
+          >
+            Bình giữ nhiệt
+          </button>
         </div>
 
         {filter.map((product) => {
           return (
-            <div id={product.id} key={product.id} className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4">
+            <div
+              id={product.id}
+              key={product.id}
+              className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4"
+            >
               <div className="card text-center h-100" key={product.id}>
                 <img
                   className="card-img-top p-3"
-                  src={product.image}
+                  src={product.image_url}
                   alt="Card"
                   height={300}
                 />
                 <div className="card-body">
-                  <h5 className="card-title">
-                    {product.title.substring(0, 12)}...
-                  </h5>
-                  <p className="card-text">
-                    {product.description.substring(0, 90)}...
-                  </p>
+                  <h5 className="card-title">{product.name}</h5>
+                  {/* <p className="card-text">{product.description}...</p> */}
                 </div>
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item lead"> {product.price} đ</li>
@@ -110,10 +155,16 @@ const Products = () => {
                     <li className="list-group-item">Vestibulum at eros</li> */}
                 </ul>
                 <div className="card-body d-flex">
-                  <Link to={"/product/" + product.id} className="btn btn-dark flex-grow-1 m-1">
+                  <Link
+                    to={"/product/" + product.id}
+                    className="btn btn-dark flex-grow-1 m-1"
+                  >
                     <i className="fas fa-shopping-cart me-2"></i>Mua ngay
                   </Link>
-                  <button className="btn btn-dark flex-grow-1 m-1" onClick={() => addProduct(product)}>
+                  <button
+                    className="btn btn-dark flex-grow-1 m-1"
+                    onClick={() => addProduct(product)}
+                  >
                     <i className="fas fa-cart-plus me-2"></i>Thêm vào giỏ hàng
                   </button>
                 </div>
