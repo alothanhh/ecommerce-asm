@@ -8,28 +8,22 @@ const AboutPage = () => {
         <h1 className="text-center">Về chúng tôi</h1>
         <hr />
         <p className="lead text-center">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-          facere doloremque veritatis odit similique sequi. Odit amet fuga nam
-          quam quasi facilis sed doloremque saepe sint perspiciatis explicabo
-          totam vero quas provident ipsam, veritatis nostrum velit quos
-          recusandae est mollitia esse fugit dolore laudantium. Ex vel explicabo
-          earum unde eligendi autem praesentium, doloremque distinctio nesciunt
-          porro tempore quis eaque labore voluptatibus ea necessitatibus
-          exercitationem tempora molestias. Ad consequuntur veniam sequi ullam
-          tempore vel tenetur soluta dolore sunt maxime aliquam corporis est,
-          quo saepe dolorem optio minus sint nemo totam dolorum! Reprehenderit
-          delectus expedita a alias nam recusandae illo debitis repellat libero,
-          quasi explicabo molestiae saepe, dolorem tempore itaque eveniet quam
-          dignissimos blanditiis excepturi harum numquam vel nihil? Ipsum
+          <b>Chào mừng đến với Sourique Corner - Nơi tạo nên những kỷ niệm đáng nhớ!</b>
+        </p>
+        <p className="lead text-left">
+          &emsp;&emsp;Sourique Corner là một cửa hàng in quà lưu niệm độc đáo và sáng tạo, nơi bạn có thể tìm thấy những sản phẩm độc đáo để ghi lại những khoảnh khắc đáng nhớ trong cuộc sống của mình. Chúng tôi tự hào là địa điểm lý tưởng để bạn tạo ra những món quà lưu niệm độc đáo, mang ý nghĩa và thể hiện tình yêu, sự trân trọng và sự chăm sóc đến những người thân yêu của mình.
+          Với đội ngũ nhân viên giàu kinh nghiệm và tận tâm, chúng tôi cam kết mang đến cho bạn những sản phẩm in quà lưu niệm chất lượng cao, từ những chiếc áo thun cá nhân hóa, huy hiệu, ảnh lưu niệm, cho đến các sản phẩm trang trí như ốp điện thoại, ảnh treo tường và nhiều hơn nữa. Mỗi sản phẩm được tạo ra từ Sourique Corner đều mang trong mình câu chuyện riêng của bạn, là một phần của cuộc sống và kỷ niệm của bạn.
+          <br />
+          &emsp;&emsp;Hãy ghé thăm Sourique Corner ngay hôm nay để khám phá thế giới của những món quà lưu niệm độc đáo và tạo ra những kỷ niệm vĩnh cửu. Chúng tôi mong muốn được phục vụ bạn và giúp bạn ghi lại những khoảnh khắc đáng nhớ trong cuộc sống!
         </p>
 
-        <h2 className="text-center py-4">Sản phẩm</h2>
+        <h2 className="text-center py-4">Thành viên</h2>
         <div className="row">
           <div className="col-md-3 col-sm-6 mb-3 px-3">
             <div className="card h-100">
               <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
               <div className="card-body">
-                <h5 className="card-title text-center">Kỷ niệm chương</h5>
+                <h5 className="card-title text-center">Lê Ngọc Hòa</h5>
               </div>
             </div>
           </div>
@@ -37,7 +31,7 @@ const AboutPage = () => {
             <div className="card h-100">
               <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
               <div className="card-body">
-                <h5 className="card-title text-center">Ly</h5>
+                <h5 className="card-title text-center">Thi Khắc Quân</h5>
               </div>
             </div>
           </div>
@@ -45,7 +39,7 @@ const AboutPage = () => {
             <div className="card h-100">
               <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/1927259/pexels-photo-1927259.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
               <div className="card-body">
-                <h5 className="card-title text-center">Bình giữ nhiệt</h5>
+                <h5 className="card-title text-center">Cù Thanh Sơn</h5>
               </div>
             </div>
           </div>
@@ -53,7 +47,7 @@ const AboutPage = () => {
             <div className="card h-100">
               <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
               <div className="card-body">
-                <h5 className="card-title text-center">Bút</h5>
+                <h5 className="card-title text-center">Phương Chung Tú</h5>
               </div>
             </div>
           </div>
@@ -63,15 +57,15 @@ const AboutPage = () => {
             <div className="card h-100">
               <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
               <div className="card-body">
-                <h5 className="card-title text-center">Túi vải</h5>
+                <h5 className="card-title text-center">Lâm Nhật Tân</h5>
               </div>
             </div>
           </div>
           <div className="col-md-3 col-sm-6 mb-3 px-3">
             <div className="card h-100">
-              <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
+              <img className="card-img-top img-fluid" src="../assets/quangthanh.jpg" alt="" style={{height:'200px', width:'100%', objectFit: "cover" }} />
               <div className="card-body">
-                <h5 className="card-title text-center">Móc khóa</h5>
+                <h5 className="card-title text-center">Đặng Quang Thành</h5>
               </div>
             </div>
           </div>
@@ -79,7 +73,7 @@ const AboutPage = () => {
             <div className="card h-100">
               <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/1927259/pexels-photo-1927259.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
               <div className="card-body">
-                <h5 className="card-title text-center">Sổ tay</h5>
+                <h5 className="card-title text-center">Đặng Quang Huy</h5>
               </div>
             </div>
           </div>
@@ -87,7 +81,7 @@ const AboutPage = () => {
             <div className="card h-100">
               <img className="card-img-top img-fluid" src="https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" height={160} />
               <div className="card-body">
-                <h5 className="card-title text-center">Huy chương</h5>
+                <h5 className="card-title text-center">Hồ Trương Đức Tiến</h5>
               </div>
             </div>
           </div>
