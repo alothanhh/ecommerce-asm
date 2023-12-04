@@ -73,7 +73,7 @@ const CheckError = () => {
             <div className="container my-3 py-3">
                 <h1 className="text-center">Kiểm lỗi</h1>
                 <hr />
-                <h5 className="text-center fs-5 weight-light">Quý khách hàng vui lòng kiểm lỗi tại đây</h5>
+                <h5 className="text-center fs-5 weight-light">Quý khách hàng vui lòng kiểm lỗi tại đây.</h5>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
                     <Box sx={{ margin: '5px', width: '30%' }}>
                         <Typography sx={{ width: '100%', marginY: '10px', color: 'gray' }}>Họ và tên</Typography>
