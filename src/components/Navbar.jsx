@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const state = useSelector((state) => state.handleCart);
   const [currentUser, setCurrentUser] = useState(() => {
     const user = localStorage.getItem("userProfile");
     if (user) {
@@ -15,13 +13,23 @@ const Navbar = () => {
     return false;
   });
 
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    const shoppingSession = async () => {
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/productservice/product/shoppingsession"
+      );
+      setTotal(response.data.total);
+    };
+    if (currentUser) shoppingSession();
+  }, []);
   const HandleLogout = async () => {
     setCurrentUser(false);
     localStorage.clear();
     try {
       const response = await axios("localhost:8000/api/v1/users/logout/");
       if (response.data.message === "Good Bye") {
-        navigate("/");
+        navigate("/login");
       }
     } catch (error) {}
   };
@@ -101,8 +109,8 @@ const Navbar = () => {
                   <i className="fa fa-sign-out-alt mr-1"></i> Đăng xuất
                 </button>
                 <NavLink to="/cart" className="btn btn-outline-dark m-2">
-                  <i className="fa fa-cart-shopping mr-1"></i> Giỏ hàng (
-                  {state.length}){" "}
+                  <i className="fa fa-cart-shopping mr-1"></i> Giỏ hàng ({total}
+                  ){" "}
                 </NavLink>
               </>
             )}

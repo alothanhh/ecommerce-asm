@@ -3,9 +3,11 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { Footer, Navbar } from "../components";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(["user"]);
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -24,6 +26,8 @@ const Login = () => {
         setNotify(true);
       } else {
         setNotify(false);
+        const token = response.data.token;
+        setCookie("jwt", token, { path: "/" });
         localStorage.setItem("userProfile", JSON.stringify(response.data));
         navigate("/");
       }
@@ -49,28 +53,28 @@ const Login = () => {
             <p>Sai email hoặc password, Xin hãy nhập lại!</p>
           </div>
         )}
-        <div class="row my-4 h-100 ">
+        <div className="row my-4 h-100 ">
           <div className="col-md-4 col-lg-4 col-sm-8 mx-auto">
             <form onSubmit={handleLogin}>
-              <div class="my-3">
-                <label for="display-4">Địa chỉ Email</label>
+              <div className="my-3">
+                <label htmlFor="display-4">Địa chỉ Email</label>
                 <input
                   type="email"
                   name="email"
                   value={form.email}
-                  class="form-control"
+                  className="form-control"
                   onChange={handleForm}
                   id="floatingInput"
                   placeholder="name@gmail.com"
                 />
               </div>
-              <div class="my-3">
-                <label for="floatingPassword display-4">Mật khẩu</label>
+              <div className="my-3">
+                <label htmlFor="floatingPassword display-4">Mật khẩu</label>
                 <input
                   type="password"
                   name="password"
                   value={form.password}
-                  class="form-control"
+                  className="form-control"
                   onChange={handleForm}
                   id="floatingPassword"
                   placeholder="Password"
@@ -88,7 +92,7 @@ const Login = () => {
                 </p>
               </div>
               <div className="text-center">
-                <button class="my-2 mx-auto btn btn-dark" type="submit">
+                <button className="my-2 mx-auto btn btn-dark" type="submit">
                   Đăng nhập
                 </button>
               </div>
