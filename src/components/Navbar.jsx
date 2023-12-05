@@ -32,6 +32,9 @@ const Navbar = () => {
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/checkerror">Kiểm lỗi</NavLink>
                         </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/chatbox">Tư vấn KH</NavLink>
+                        </li>
                     </ul>
                     <div className="buttons text-center">
                         <NavLink to="/login" className="btn btn-outline-dark m-2"><i className="fa fa-sign-in-alt mr-1"></i> Đăng nhập</NavLink>
