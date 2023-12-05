@@ -10,7 +10,9 @@ const Checkout = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-12 py-5 bg-light text-center">
-            <h4 className="p-3 display-5">Không có mặt hàng nào cần thanh toán</h4>
+            <h4 className="p-3 display-5">
+              Không có mặt hàng nào cần thanh toán
+            </h4>
             <Link to="/" className="btn btn-outline-dark mx-4">
               <i className="fa fa-arrow-left"></i> Tiếp tục mua sắm
             </Link>
@@ -43,10 +45,11 @@ const Checkout = () => {
                 <div className="card-body">
                   <ul className="list-group list-group-flush">
                     <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                      Sản phẩm ({totalItems})<span>{Math.round(subtotal)} đ</span>
+                      Sản phẩm ({totalItems})
+                      <span>{Math.round(subtotal)} đ</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between align-items-center px-0">
-                    Phí giao hàng
+                      Phí giao hàng
                       <span>{shipping} đ</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
@@ -88,7 +91,7 @@ const Checkout = () => {
 
                       <div className="col-sm-6 my-1">
                         <label for="lastName" className="form-label">
-                         Số điện thoại
+                          Số điện thoại
                         </label>
                         <input
                           type="text"
@@ -122,7 +125,7 @@ const Checkout = () => {
 
                       <div className="col-12 my-1">
                         <label for="address" className="form-label">
-                         Địa chỉ giao hàng cụ thể
+                          Địa chỉ giao hàng cụ thể
                         </label>
                         <input
                           type="text"
@@ -138,8 +141,7 @@ const Checkout = () => {
 
                       <div className="col-12">
                         <label for="address2" className="form-label">
-                          Đường{" "}
-                          <span className="text-muted">(Optional)</span>
+                          Đường <span className="text-muted">(Optional)</span>
                         </label>
                         <input
                           type="text"
@@ -268,7 +270,8 @@ const Checkout = () => {
 
                     <button
                       className="w-100 btn btn-primary "
-                      type="submit" disabled
+                      type="submit"
+                      disabled
                     >
                       Continue to checkout
                     </button>

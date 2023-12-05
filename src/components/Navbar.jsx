@@ -19,9 +19,9 @@ const Navbar = () => {
   useEffect(() => {
     const shoppingSession = async () => {
       const response = await axios.get(
-        "http://localhost:8000/api/v1/productservice/product/shoppingsession"
+        "http://localhost:8000/api/v1/productservice/product/shoppingsession",
+        { withCredentials: true }
       );
-      console.log(response.data.tota);
       setTotal(response.data.total);
     };
     if (currentUser) shoppingSession();
@@ -29,10 +29,13 @@ const Navbar = () => {
   const HandleLogout = async () => {
     setCurrentUser(false);
     localStorage.clear();
-    removeCookie("jwt");
     navigate("/login");
     try {
-      const response = await axios.post("localhost:8000/api/v1/users/logout/");
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/users/logout/",
+        null,
+        { withCredentials: true }
+      );
       console.log(response.data);
     } catch (error) {
       console.log(error);
