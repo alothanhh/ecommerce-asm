@@ -113,7 +113,7 @@ const Products = () => {
           </button>
           <button
             className="btn btn-outline-dark btn-sm m-2"
-            onClick={() => filterProduct("Huy chương")}
+            onClick={() => filterProduct("Huy Chương")}
           >
             Huy chương
           </button>

@@ -1,9 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Footer, Navbar } from "../components";
-import { addCart, delCart } from "../redux/action";
+// import { addCart, delCart } from "../redux/action";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Cart = () => {
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    const shoppingSession = async () => {
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/productservice/product/shoppingsession",
+        { withCredentials: true }
+      );
+      setTotal(response.data.total);
+    };
+    if (currentUser) shoppingSession();
+  }, []);
   const [currentUser, setCurrentUser] = useState(() => {
     const user = localStorage.getItem("userProfile");
     if (user) {
@@ -171,7 +183,7 @@ const Cart = () => {
         <h1 className="text-center">Giỏ hàng</h1>
         <hr />
         {!currentUser && <EmptyCart />}
-        {currentUser ? <ShowCart /> : <EmptyCart />}
+        {currentUser && total !== 0 ? <ShowCart /> : <EmptyCart />}
       </div>
       <Footer />
     </>

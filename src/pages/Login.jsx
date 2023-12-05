@@ -7,7 +7,7 @@ import { useCookies } from "react-cookie";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(["user"]);
+  const [cookie, setCookie] = useCookies(["user"]);
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -79,7 +79,7 @@ const Login = () => {
                   placeholder="Password"
                 />
               </div>
-              <div className="my-3">
+              <div className="my-3 text-center">
                 <p>
                   Bạn chưa có tài khoản?{" "}
                   <Link

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Link, useParams } from "react-router-dom";
-import Marquee from "react-fast-marquee";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
+import Marquee from "react-fast-marquee";
+
 import { Footer, Navbar } from "../components";
+import axios from "axios";
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState([]);
@@ -14,8 +16,17 @@ const Product = () => {
 
   const dispatch = useDispatch();
 
-  const addProduct = (product) => {
+  const changeProduct = (product) => {
     dispatch(addCart(product));
+  };
+
+  const addProduct = async (product) => {
+    await axios.post(
+      "http://localhost:8000/api/v1/productservice/product/addcarditem/",
+      { product_id: product.product_id, quantity: product.quantity },
+      { withCredentials: true }
+    );
+    changeProduct();
   };
 
   useEffect(() => {
@@ -95,7 +106,9 @@ const Product = () => {
               <p className="lead">{product.description}</p>
               <button
                 className="btn btn-outline-dark"
-                onClick={() => addProduct(product)}
+                onClick={() =>
+                  addProduct({ product_id: product.id, quantity: 1 })
+                }
               >
                 Thêm vào Giỏ hàng
               </button>
@@ -162,7 +175,9 @@ const Product = () => {
                     </Link>
                     <button
                       className="btn btn-dark m-1"
-                      onClick={() => addProduct(item)}
+                      onClick={() =>
+                        addProduct({ product_id: item.id, quantity: 1 })
+                      }
                     >
                       Thêm vào Giỏ hàng
                     </button>
