@@ -22,7 +22,7 @@ const Checkout = () => {
 
   const ShowCheckout = () => {
     let subtotal = 0;
-    let shipping = 30.0;
+    let shipping = 15000;
     let totalItems = 0;
     state.map((item) => {
       return (subtotal += item.price * item.qty);
