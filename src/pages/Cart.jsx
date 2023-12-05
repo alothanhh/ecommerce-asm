@@ -6,6 +6,7 @@ import axios from "axios";
 
 const Cart = () => {
   const [total, setTotal] = useState(0);
+  const [listCardItem, setListCardItem] = useState([]);
   useEffect(() => {
     const shoppingSession = async () => {
       const response = await axios.get(
@@ -14,7 +15,16 @@ const Cart = () => {
       );
       setTotal(response.data.total);
     };
+    const listCardItemFunc = async () => {
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/productservice/product/carditem/",
+        { withCredentials: true }
+      );
+      setListCardItem(response.data);
+    };
+
     if (currentUser) shoppingSession();
+    listCardItemFunc();
   }, []);
   const [currentUser, setCurrentUser] = useState(() => {
     const user = localStorage.getItem("userProfile");
@@ -41,20 +51,17 @@ const Cart = () => {
     );
   };
 
-  const addItem = (product) => {};
-  const removeItem = (product) => {};
-
   const ShowCart = () => {
     let subtotal = 0;
     let shipping = 15000;
     let totalItems = 0;
-    // state.map((item) => {
-    //   return (subtotal += item.price * item.qty);
-    // });
+    listCardItem.map((item) => {
+      return (subtotal += item.product_id.price * item.quantity);
+    });
 
-    // state.map((item) => {
-    //   return (totalItems += item.qty);
-    // });
+    listCardItem.map((item) => {
+      return (totalItems += item.quantity);
+    });
     return (
       <>
         <section className="h-100 gradient-custom">
@@ -66,7 +73,7 @@ const Cart = () => {
                     <h5 className="mb-0">Danh sách sản phẩm trong giỏ hàng</h5>
                   </div>
                   <div className="card-body">
-                    {/* {state.map((item) => {
+                    {listCardItem.map((item) => {
                       return (
                         <div key={item.id}>
                           <div className="row d-flex align-items-center">
@@ -76,9 +83,9 @@ const Cart = () => {
                                 data-mdb-ripple-color="light"
                               >
                                 <img
-                                  src={item.image}
+                                  src={item.product_id.image_url}
                                   // className="w-100"
-                                  alt={item.title}
+                                  alt={item.product_id.name}
                                   width={100}
                                   height={75}
                                 />
@@ -87,10 +94,10 @@ const Cart = () => {
 
                             <div className="col-lg-5 col-md-6">
                               <p>
-                                <strong>{item.title}</strong>
+                                <strong>{item.product_id.name}</strong>
                               </p>
                               {/* <p>Color: blue</p>
-                              <p>Size: M</p> }
+                              <p>Size: M</p> */}
                             </div>
 
                             <div className="col-lg-4 col-md-6">
@@ -101,18 +108,27 @@ const Cart = () => {
                                 <button
                                   className="btn px-3"
                                   onClick={() => {
-                                    removeItem(item);
+                                    // removeItem(item);
                                   }}
                                 >
                                   <i className="fas fa-minus"></i>
                                 </button>
-
-                                <p className="mx-5">{item.qty}</p>
+                                <div
+                                  className="mx-5"
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <p style={{ marginTop: "1rem" }}>
+                                    {item.quantity}
+                                  </p>
+                                </div>
 
                                 <button
                                   className="btn px-3"
                                   onClick={() => {
-                                    addItem(item);
+                                    // addItem(item);
                                   }}
                                 >
                                   <i className="fas fa-plus"></i>
@@ -121,8 +137,10 @@ const Cart = () => {
 
                               <p className="text-start text-md-center">
                                 <strong>
-                                  <span className="text-muted">{item.qty}</span>{" "}
-                                  x ${item.price}
+                                  <span className="text-muted">
+                                    {item.quantity}
+                                  </span>{" "}
+                                  x ${item.product_id.price}
                                 </strong>
                               </p>
                             </div>
@@ -131,7 +149,7 @@ const Cart = () => {
                           <hr className="my-4" />
                         </div>
                       );
-                    })} */}
+                    })}
                   </div>
                 </div>
               </div>
