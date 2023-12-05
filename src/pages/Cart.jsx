@@ -1,19 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Footer, Navbar } from "../components";
-import { useSelector, useDispatch } from "react-redux";
 import { addCart, delCart } from "../redux/action";
 import { Link } from "react-router-dom";
 
 const Cart = () => {
-  const state = useSelector((state) => state.handleCart);
-  const dispatch = useDispatch();
+  const [currentUser, setCurrentUser] = useState(() => {
+    const user = localStorage.getItem("userProfile");
+    if (user) {
+      return true;
+    }
+    return false;
+  });
 
   const EmptyCart = () => {
     return (
       <div className="container">
         <div className="row">
           <div className="col-md-12 py-5 bg-light text-center">
-            <h4 className="p-3 display-5">Giỏ hàng bạn đang không có mặt hàng nào</h4>
+            <h4 className="p-3 display-5">
+              Giỏ hàng bạn đang không có mặt hàng nào
+            </h4>
             <Link to="/" className="btn  btn-outline-dark mx-4">
               <i className="fa fa-arrow-left"></i> Tiếp tục mua sắm
             </Link>
@@ -23,24 +29,20 @@ const Cart = () => {
     );
   };
 
-  const addItem = (product) => {
-    dispatch(addCart(product));
-  };
-  const removeItem = (product) => {
-    dispatch(delCart(product));
-  };
+  const addItem = (product) => {};
+  const removeItem = (product) => {};
 
   const ShowCart = () => {
     let subtotal = 0;
     let shipping = 15000;
     let totalItems = 0;
-    state.map((item) => {
-      return (subtotal += item.price * item.qty);
-    });
+    // state.map((item) => {
+    //   return (subtotal += item.price * item.qty);
+    // });
 
-    state.map((item) => {
-      return (totalItems += item.qty);
-    });
+    // state.map((item) => {
+    //   return (totalItems += item.qty);
+    // });
     return (
       <>
         <section className="h-100 gradient-custom">
@@ -52,7 +54,7 @@ const Cart = () => {
                     <h5 className="mb-0">Danh sách sản phẩm trong giỏ hàng</h5>
                   </div>
                   <div className="card-body">
-                    {state.map((item) => {
+                    {/* {state.map((item) => {
                       return (
                         <div key={item.id}>
                           <div className="row d-flex align-items-center">
@@ -76,7 +78,7 @@ const Cart = () => {
                                 <strong>{item.title}</strong>
                               </p>
                               {/* <p>Color: blue</p>
-                              <p>Size: M</p> */}
+                              <p>Size: M</p> }
                             </div>
 
                             <div className="col-lg-4 col-md-6">
@@ -117,7 +119,7 @@ const Cart = () => {
                           <hr className="my-4" />
                         </div>
                       );
-                    })}
+                    })} */}
                   </div>
                 </div>
               </div>
@@ -129,7 +131,8 @@ const Cart = () => {
                   <div className="card-body">
                     <ul className="list-group list-group-flush">
                       <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                        Sản phẩm ({totalItems})<span>{Math.round(subtotal)} đ</span>
+                        Sản phẩm ({totalItems})
+                        <span>{Math.round(subtotal)} đ</span>
                       </li>
                       <li className="list-group-item d-flex justify-content-between align-items-center px-0">
                         Phí giao hàng (Tạm tính)
@@ -167,7 +170,8 @@ const Cart = () => {
       <div className="container my-3 py-3">
         <h1 className="text-center">Giỏ hàng</h1>
         <hr />
-        {state.length > 0 ? <ShowCart /> : <EmptyCart />}
+        {!currentUser && <EmptyCart />}
+        {currentUser ? <ShowCart /> : <EmptyCart />}
       </div>
       <Footer />
     </>

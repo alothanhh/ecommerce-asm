@@ -5,7 +5,6 @@ import Marquee from "react-fast-marquee";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
 import { Footer, Navbar } from "../components";
-import axios from "axios";
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState([]);

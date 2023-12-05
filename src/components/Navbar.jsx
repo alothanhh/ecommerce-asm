@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import axios from "axios";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const [currentUser, setCurrentUser] = useState(() => {
     const user = localStorage.getItem("userProfile");
     if (user) {
@@ -19,6 +21,7 @@ const Navbar = () => {
       const response = await axios.get(
         "http://localhost:8000/api/v1/productservice/product/shoppingsession"
       );
+      console.log(response.data.tota);
       setTotal(response.data.total);
     };
     if (currentUser) shoppingSession();
@@ -26,12 +29,14 @@ const Navbar = () => {
   const HandleLogout = async () => {
     setCurrentUser(false);
     localStorage.clear();
+    removeCookie("jwt");
+    navigate("/login");
     try {
-      const response = await axios("localhost:8000/api/v1/users/logout/");
-      if (response.data.message === "Good Bye") {
-        navigate("/login");
-      }
-    } catch (error) {}
+      const response = await axios.post("localhost:8000/api/v1/users/logout/");
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
