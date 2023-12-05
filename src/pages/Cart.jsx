@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Footer, Navbar } from "../components";
-// import { addCart, delCart } from "../redux/action";
+import { addCart, delCart } from "../redux/action";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 const Cart = () => {
+  const state = useSelector((state) => state.handleCart);
+  const dispatch = useDispatch();
+  const AddProductFunc = (product) => {
+    dispatch(addCart(product));
+  };
+  const RemoveProductFunc = (product) => {
+    dispatch(delCart(product));
+  };
+
   const [total, setTotal] = useState(0);
   const [listCardItem, setListCardItem] = useState([]);
   useEffect(() => {
@@ -25,7 +36,7 @@ const Cart = () => {
 
     if (currentUser) shoppingSession();
     listCardItemFunc();
-  }, []);
+  }, [state]);
   const [currentUser, setCurrentUser] = useState(() => {
     const user = localStorage.getItem("userProfile");
     if (user) {
@@ -33,6 +44,28 @@ const Cart = () => {
     }
     return false;
   });
+
+  const removeItem = async (cartitem_id, quantity) => {
+    await axios.put(
+      `http://localhost:8000/api/v1/productservice/product/carditem/${cartitem_id}/`,
+      {
+        id: cartitem_id,
+        quantity: quantity,
+      }
+    );
+    RemoveProductFunc();
+  };
+
+  const addItem = async (cartitem_id, quantity) => {
+    await axios.put(
+      `http://localhost:8000/api/v1/productservice/product/carditem/${cartitem_id}/`,
+      {
+        id: cartitem_id,
+        quantity: quantity,
+      }
+    );
+    AddProductFunc();
+  };
 
   const EmptyCart = () => {
     return (
@@ -84,7 +117,6 @@ const Cart = () => {
                               >
                                 <img
                                   src={item.product_id.image_url}
-                                  // className="w-100"
                                   alt={item.product_id.name}
                                   width={100}
                                   height={75}
@@ -96,8 +128,6 @@ const Cart = () => {
                               <p>
                                 <strong>{item.product_id.name}</strong>
                               </p>
-                              {/* <p>Color: blue</p>
-                              <p>Size: M</p> */}
                             </div>
 
                             <div className="col-lg-4 col-md-6">
