@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
-
+import { useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import axios from "axios";
 
 import { Link } from "react-router-dom";
 
 const Products = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState(data);
   const [loading, setLoading] = useState(false);
@@ -15,8 +17,22 @@ const Products = () => {
 
   const dispatch = useDispatch();
 
-  const addProduct = (product) => {
+  const changeProduct = (product) => {
     dispatch(addCart(product));
+  };
+
+  const addProduct = async (product) => {
+    try {
+      await axios.post(
+        "http://localhost:8000/api/v1/productservice/product/addcarditem/",
+        { product_id: product.product_id, quantity: product.quantity },
+        { withCredentials: true }
+      );
+    } catch (error) {
+      alert("Xin hãy đăng nhập trước khi mua hàng!");
+      navigate("/login");
+    }
+    changeProduct();
   };
 
   useEffect(() => {

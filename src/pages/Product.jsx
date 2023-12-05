@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
 import Marquee from "react-fast-marquee";
-
 import { Footer, Navbar } from "../components";
 import axios from "axios";
+
 const Product = () => {
+  const [currentUser, setCurrentUser] = useState(() => {
+    const user = localStorage.getItem("userProfile");
+    if (user) {
+      return true;
+    }
+    return false;
+  });
+
+  const navigate = useNavigate();
   const { id } = useParams();
   const [product, setProduct] = useState([]);
   const [similarProducts, setSimilarProducts] = useState([]);
@@ -21,11 +31,16 @@ const Product = () => {
   };
 
   const addProduct = async (product) => {
-    await axios.post(
-      "http://localhost:8000/api/v1/productservice/product/addcarditem/",
-      { product_id: product.product_id, quantity: product.quantity },
-      { withCredentials: true }
-    );
+    try {
+      await axios.post(
+        "http://localhost:8000/api/v1/productservice/product/addcarditem/",
+        { product_id: product.product_id, quantity: product.quantity },
+        { withCredentials: true }
+      );
+    } catch (error) {
+      alert("Xin hãy đăng nhập trước khi mua hàng!");
+      navigate("/login");
+    }
     changeProduct();
   };
 
@@ -37,10 +52,7 @@ const Product = () => {
         `http://localhost:8000/api/v1/productservice/product/${id}/`
       );
       const data = await response.json();
-      const numericId = parseInt(id, 10);
-      const product = data.find((item) => item.id === numericId);
-      // setFilter(updatedList);
-      setProduct(product);
+      setProduct(data);
       setLoading(false);
       const response2 = await fetch(
         `http://localhost:8000/api/v1/productservice/product/category/${data.category_id}/`
@@ -50,7 +62,7 @@ const Product = () => {
       setLoading2(false);
       window.scrollTo({
         top: 0,
-        behavior: "auto", // Hoặc 'auto' để cuộn mà không có hiệu ứng mượt mà
+        behavior: "auto",
       });
     };
     getProduct();
@@ -99,8 +111,7 @@ const Product = () => {
               </h4>
               <h1 className="display-5">{product.name}</h1>
               <p className="lead">
-                {product.rating && product.rating.rate}{" "}
-                <i className="fa fa-star"></i>
+                {Math.floor(Math.random() * 5)} <i className="fa fa-star"></i>
               </p>
               <h3 className="display-6  my-4">{product.price} đ</h3>
               <p className="lead">{product.description}</p>
@@ -112,9 +123,11 @@ const Product = () => {
               >
                 Thêm vào Giỏ hàng
               </button>
-              <Link to="/cart" className="btn btn-dark mx-3">
-                Đi tới Giỏ hàng
-              </Link>
+              {currentUser && (
+                <Link to="/cart" className="btn btn-dark mx-3">
+                  Đi tới Giỏ hàng
+                </Link>
+              )}
             </div>
           </div>
         </div>

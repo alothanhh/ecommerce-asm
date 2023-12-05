@@ -9,6 +9,13 @@ import axios from "axios";
 const Cart = () => {
   const state = useSelector((state) => state.handleCart);
   const dispatch = useDispatch();
+  const [currentUser, setCurrentUser] = useState(() => {
+    const user = localStorage.getItem("userProfile");
+    if (user) {
+      return true;
+    }
+    return false;
+  });
   const AddProductFunc = (product) => {
     dispatch(addCart(product));
   };
@@ -36,23 +43,25 @@ const Cart = () => {
 
     if (currentUser) shoppingSession();
     listCardItemFunc();
-  }, [state]);
-  const [currentUser, setCurrentUser] = useState(() => {
-    const user = localStorage.getItem("userProfile");
-    if (user) {
-      return true;
-    }
-    return false;
-  });
+  }, [currentUser, state]);
 
   const removeItem = async (cartitem_id, quantity) => {
-    await axios.put(
-      `http://localhost:8000/api/v1/productservice/product/carditem/${cartitem_id}/`,
-      {
-        id: cartitem_id,
-        quantity: quantity,
-      }
-    );
+    if (quantity < 0) quantity = 0;
+    if (quantity === 0) {
+      await axios.delete(
+        `http://localhost:8000/api/v1/productservice/product/carditem/${cartitem_id}/`,
+        { withCredentials: true }
+      );
+    } else {
+      await axios.put(
+        `http://localhost:8000/api/v1/productservice/product/carditem/${cartitem_id}/`,
+        {
+          id: cartitem_id,
+          quantity: quantity,
+        },
+        { withCredentials: true }
+      );
+    }
     RemoveProductFunc();
   };
 
@@ -62,7 +71,8 @@ const Cart = () => {
       {
         id: cartitem_id,
         quantity: quantity,
-      }
+      },
+      { withCredentials: true }
     );
     AddProductFunc();
   };
@@ -138,7 +148,7 @@ const Cart = () => {
                                 <button
                                   className="btn px-3"
                                   onClick={() => {
-                                    // removeItem(item);
+                                    removeItem(item.id, item.quantity - 1);
                                   }}
                                 >
                                   <i className="fas fa-minus"></i>
@@ -158,7 +168,7 @@ const Cart = () => {
                                 <button
                                   className="btn px-3"
                                   onClick={() => {
-                                    // addItem(item);
+                                    addItem(item.id, item.quantity + 1);
                                   }}
                                 >
                                   <i className="fas fa-plus"></i>

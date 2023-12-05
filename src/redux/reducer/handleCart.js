@@ -6,11 +6,10 @@ const handleCart = (state = number, action) => {
       // Check if product already in cart
       state += 1;
       return state;
-      break;
+
     case "DELITEM":
       state -= 1;
       return state;
-      break;
 
     default:
       return state;

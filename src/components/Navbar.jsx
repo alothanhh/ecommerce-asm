@@ -44,7 +44,7 @@ const Navbar = () => {
       <div className="container">
         <NavLink className="navbar-brand fw-bold fs-4 px-2" to="/">
           <img
-            src="../assets/icon.png"
+            src="./assets/icon.jpg"
             alt="Sourique corner"
             style={{ width: "200px", height: "auto" }}
           />
@@ -83,16 +83,18 @@ const Navbar = () => {
                 Liên hệ
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/checkerror">
-                Kiểm lỗi
-              </NavLink>
-            </li>
-            <li className="nav-item">
+            {currentUser && (
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/checkerror">
+                  Kiểm lỗi
+                </NavLink>
+              </li>
+            )}
+            {/* <li className="nav-item">
               <NavLink className="nav-link" to="/chatbox">
                 Tư vấn KH
               </NavLink>
-            </li>
+            </li> */}
           </ul>
           <div className="buttons text-center">
             {!currentUser && (
