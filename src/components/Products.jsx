@@ -22,7 +22,7 @@ const Products = () => {
   useEffect(() => {
     const getProducts = async () => {
       setLoading(true);
-      const response = await fetch("https://fakestoreapi.com/products/");
+      const response = await fetch("https://mocki.io/v1/4a7ee945-a8af-4e8c-bed3-9ce592c0544e");
       if (componentMounted) {
         setData(await response.clone().json());
         setFilter(await response.json());
@@ -74,16 +74,16 @@ const Products = () => {
       <>
         <div className="buttons text-center py-5">
           <button className="btn btn-outline-dark btn-sm m-2" onClick={() => setFilter(data)}>Tất cả</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("men's clothing")}>Bút</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("women's clothing")}>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Bút")}>Bút</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Sổ tay")}>
             Sổ tay
           </button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("jewelery")}>Kỷ niệm chương</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("electronics")}>Ly</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("electronics")}>Túi vải</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("electronics")}>Huy chương</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("electronics")}>Móc khóa</button>
-          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("electronics")}>Bình giữ nhiệt</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Kỷ niệm chương")}>Kỷ niệm chương</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Ly")}>Ly</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Túi vải")}>Túi vải</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Huy chương")}>Huy chương</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Móc khóa")}>Móc khóa</button>
+          <button className="btn btn-outline-dark btn-sm m-2" onClick={() => filterProduct("Bình giữ nhiệt")}>Bình giữ nhiệt</button>
         </div>
 
         {filter.map((product) => {
