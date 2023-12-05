@@ -9,7 +9,7 @@ const Navbar = () => {
         <nav className="navbar navbar-expand-lg navbar-white bg-white py-3 sticky-top">
             <div className="container">
                 <NavLink className="navbar-brand fw-bold fs-4 px-2" to="/">
-                    <img src="../assets/icon.png" alt="Sourique corner" style={{ width: '200px', height: 'auto' }} />
+                    <img src="./assets/icon.jpg" alt="Sourique corner" style={{ width: '200px', height: 'auto' }} />
                 </NavLink>
                 <button className="navbar-toggler mx-2" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>

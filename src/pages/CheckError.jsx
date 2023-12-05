@@ -76,19 +76,6 @@ const CheckError = () => {
                 <h5 className="text-center fs-5 weight-light">Quý khách hàng vui lòng kiểm lỗi tại đây.</h5>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
                     <Box sx={{ margin: '5px', width: '30%' }}>
-                        <Typography sx={{ width: '100%', marginY: '10px', color: 'gray' }}>Họ và tên</Typography>
-                        <TextField
-                            required
-                            value={name}
-                            onChange={handleChangeName}
-                            size='small'
-                            sx={{ marginRight: '10px', width: '100%' }}
-                            id="outlined-basic"
-                            variant="outlined"
-                            placeholder='Nhập họ và tên bạn'
-                        />
-                    </Box>
-                    <Box sx={{ margin: '5px', width: '30%' }}>
                         <Typography sx={{ width: '100%', marginY: '10px', color: 'gray' }}>Chọn loại sản phẩm</Typography>
                         <FormControl sx={{ width: '100%' }}>
                             <Select
@@ -107,6 +94,17 @@ const CheckError = () => {
                                 <MenuItem value={'Bình giữ nhiệt'}> Bình giữ nhiệt </MenuItem>
                             </Select>
                         </FormControl>
+                        <Typography sx={{ width: '100%', marginY: '10px', color: 'gray' }}>Tên sản phẩm</Typography>
+                        <TextField
+                            required
+                            value={name}
+                            onChange={handleChangeName}
+                            size='small'
+                            sx={{ marginRight: '10px', width: '100%' }}
+                            id="outlined-basic"
+                            variant="outlined"
+                            placeholder='Nhập tên sản phẩm'
+                        />
                         <Box sx={{ mt: '15px', display: 'flex', flexDirection: 'column' }}>
                             <Typography sx={{ width: '100%', color: 'gray' }}>File hình ảnh của sản phẩm</Typography>
                             <Button

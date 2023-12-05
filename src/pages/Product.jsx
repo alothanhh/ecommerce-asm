@@ -24,16 +24,24 @@ const Product = () => {
     const getProduct = async () => {
       setLoading(true);
       setLoading2(true);
-      const response = await fetch(`https://fakestoreapi.com/products/${id}`);
+      const response = await fetch(`https://mocki.io/v1/4a7ee945-a8af-4e8c-bed3-9ce592c0544e`);
       const data = await response.json();
-      setProduct(data);
+      const numericId = parseInt(id, 10);
+      const product = data.find((item) => item.id === numericId);
+      // setFilter(updatedList);
+      setProduct(product);
       setLoading(false);
-      const response2 = await fetch(
-        `https://fakestoreapi.com/products/category/${data.category}`
-      );
-      const data2 = await response2.json();
-      setSimilarProducts(data2);
+      // const response2 = await fetch(
+      //   `https://fakestoreapi.com/products/category/${data.category}`
+      // );
+      // const data2 = await response2.json();
+      const listSimilarProduct = data.filter((item) => item.category === product.category);
+      setSimilarProducts(listSimilarProduct);
       setLoading2(false);
+      window.scrollTo({
+        top: 0,
+        behavior: 'auto' // Hoặc 'auto' để cuộn mà không có hiệu ứng mượt mà
+      });
     };
     getProduct();
   }, [id]);
@@ -143,9 +151,9 @@ const Product = () => {
                       {item.title.substring(0, 15)}...
                     </h5>
                   </div>
-                  {/* <ul className="list-group list-group-flush">
+                  <ul className="list-group list-group-flush">
                     <li className="list-group-item lead">${product.price}</li>
-                  </ul> */}
+                  </ul>
                   <div className="card-body">
                     <Link
                       to={"/product/" + item.id}
