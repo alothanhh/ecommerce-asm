@@ -1,9 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
 import { Footer, Navbar } from "../components";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import axios from "axios";
 const Checkout = () => {
-  const state = useSelector((state) => state.handleCart);
+  const [listCartItem, setListCartItem] = useState([]);
+  const [currentUser, setCurrentUser] = useState(() => {
+    const user = localStorage.getItem("userProfile");
+    if (user) {
+      return true;
+    }
+    return false;
+  });
+  useEffect(() => {
+    const ListCardItemFunc = async () => {
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/productservice/product/carditem/",
+        { withCredentials: true }
+      );
+      setListCartItem(response.data);
+    };
+    ListCardItemFunc();
+  }, []);
+
+  const LoadingCart = () => {
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12 py-3 bg-light text-center">
+            <Skeleton height={400} />
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   const EmptyCart = () => {
     return (
@@ -26,12 +56,12 @@ const Checkout = () => {
     let subtotal = 0;
     let shipping = 15000;
     let totalItems = 0;
-    state.map((item) => {
-      return (subtotal += item.price * item.qty);
+    listCartItem.map((item) => {
+      return (subtotal += item.product_id.price * item.quantity);
     });
 
-    state.map((item) => {
-      return (totalItems += item.qty);
+    listCartItem.map((item) => {
+      return (totalItems += item.quantity);
     });
     return (
       <>
@@ -73,7 +103,7 @@ const Checkout = () => {
                   <form className="needs-validation" novalidate>
                     <div className="row g-3">
                       <div className="col-sm-6 my-1">
-                        <label for="firstName" className="form-label">
+                        <label htmlFor="firstName" className="form-label">
                           Họ và tên
                         </label>
                         <input
@@ -90,7 +120,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-sm-6 my-1">
-                        <label for="lastName" className="form-label">
+                        <label htmlFor="lastName" className="form-label">
                           Số điện thoại
                         </label>
                         <input
@@ -107,7 +137,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-12 my-1">
-                        <label for="email" className="form-label">
+                        <label htmlFor="email" className="form-label">
                           Email
                         </label>
                         <input
@@ -124,7 +154,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-12 my-1">
-                        <label for="address" className="form-label">
+                        <label htmlFor="address" className="form-label">
                           Địa chỉ giao hàng cụ thể
                         </label>
                         <input
@@ -140,7 +170,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-12">
-                        <label for="address2" className="form-label">
+                        <label htmlFor="address2" className="form-label">
                           Đường <span className="text-muted">(Optional)</span>
                         </label>
                         <input
@@ -152,7 +182,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-md-5 my-1">
-                        <label for="country" className="form-label">
+                        <label htmlFor="country" className="form-label">
                           Phường/Xã
                         </label>
                         <br />
@@ -166,7 +196,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-md-4 my-1">
-                        <label for="state" className="form-label">
+                        <label htmlFor="state" className="form-label">
                           Quận/Huyện
                         </label>
                         <br />
@@ -180,7 +210,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-md-3 my-1">
-                        <label for="zip" className="form-label">
+                        <label htmlFor="zip" className="form-label">
                           Tỉnh/Thành phố
                         </label>
                         <select className="form-select" id="city" required>
@@ -199,7 +229,7 @@ const Checkout = () => {
 
                     <div className="row gy-3">
                       <div className="col-md-6">
-                        <label for="cc-name" className="form-label">
+                        <label htmlFor="cc-name" className="form-label">
                           Name on card
                         </label>
                         <input
@@ -218,7 +248,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-md-6">
-                        <label for="cc-number" className="form-label">
+                        <label htmlFor="cc-number" className="form-label">
                           Credit card number
                         </label>
                         <input
@@ -234,7 +264,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-md-3">
-                        <label for="cc-expiration" className="form-label">
+                        <label htmlFor="cc-expiration" className="form-label">
                           Expiration
                         </label>
                         <input
@@ -250,7 +280,7 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-md-3">
-                        <label for="cc-cvv" className="form-label">
+                        <label htmlFor="cc-cvv" className="form-label">
                           CVV
                         </label>
                         <input
@@ -290,7 +320,13 @@ const Checkout = () => {
       <div className="container my-3 py-3">
         <h1 className="text-center">Thông tin thanh toán</h1>
         <hr />
-        {state.length ? <ShowCheckout /> : <EmptyCart />}
+        {!currentUser ? (
+          <EmptyCart />
+        ) : listCartItem.length ? (
+          <ShowCheckout />
+        ) : (
+          <LoadingCart />
+        )}
       </div>
       <Footer />
     </>

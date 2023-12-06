@@ -25,7 +25,7 @@ const Navbar = () => {
       setTotal(response.data.total);
     };
     if (currentUser) shoppingSession();
-  }, [state]);
+  }, [currentUser, state]);
   const HandleLogout = async () => {
     setCurrentUser(false);
     localStorage.clear();
@@ -44,7 +44,7 @@ const Navbar = () => {
       <div className="container">
         <NavLink className="navbar-brand fw-bold fs-4 px-2" to="/">
           <img
-            src="./assets/icon.jpg"
+            src="/assets/icon.jpg"
             alt="Sourique corner"
             style={{ width: "200px", height: "auto" }}
           />
@@ -90,11 +90,13 @@ const Navbar = () => {
                 </NavLink>
               </li>
             )}
-            {/* <li className="nav-item">
-              <NavLink className="nav-link" to="/chatbox">
-                Tư vấn KH
-              </NavLink>
-            </li> */}
+            {currentUser && (
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/chatbox">
+                  Tư vấn KH
+                </NavLink>
+              </li>
+            )}
           </ul>
           <div className="buttons text-center">
             {!currentUser && (

@@ -240,8 +240,13 @@ const Cart = () => {
       <div className="container my-3 py-3">
         <h1 className="text-center">Giỏ hàng</h1>
         <hr />
-        {!currentUser && <EmptyCart />}
-        {currentUser && total !== 0 ? <ShowCart /> : <EmptyCart />}
+        {!currentUser ? (
+          <EmptyCart />
+        ) : currentUser && total !== 0 ? (
+          <ShowCart />
+        ) : (
+          <EmptyCart />
+        )}
       </div>
       <Footer />
     </>
