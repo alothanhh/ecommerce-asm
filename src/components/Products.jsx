@@ -25,7 +25,7 @@ const Products = () => {
     try {
       await axios.post(
         "http://localhost:8000/api/v1/productservice/product/addcarditem/",
-        { product_id: product.product_id, quantity: product.quantity },
+        { product_id: product.id, quantity: 1 },
         { withCredentials: true }
       );
     } catch (error) {
