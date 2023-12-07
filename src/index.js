@@ -19,6 +19,7 @@ import {
   PageNotFound,
   CheckError,
   ChatBox,
+  Confirm,
 } from "./pages";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -37,6 +38,7 @@ root.render(
           <Route path="/register" element={<Register />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/chatbox" element={<ChatBox />} />
+          <Route path="/confirm" element={<Confirm />} />
           <Route path="/checkerror" element={<CheckError />} />
           <Route path="*" element={<PageNotFound />} />
           <Route path="/product/*" element={<PageNotFound />} />

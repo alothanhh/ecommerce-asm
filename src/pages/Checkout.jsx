@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Footer, Navbar } from "../components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+
 const Checkout = () => {
+  const navigate = useNavigate();
+
   const [listCartItem, setListCartItem] = useState([]);
+
   const [currentUser, setCurrentUser] = useState(() => {
     const user = localStorage.getItem("userProfile");
     if (user) {
@@ -12,6 +16,7 @@ const Checkout = () => {
     }
     return false;
   });
+
   useEffect(() => {
     const ListCardItemFunc = async () => {
       const response = await axios.get(
@@ -22,6 +27,23 @@ const Checkout = () => {
     };
     ListCardItemFunc();
   }, []);
+
+  const CheckoutFuncHandler = async () => {
+    const res = await axios.get(
+      "http://localhost:8000/api/v1/productservice/product/shoppingsession",
+      { withCredentials: true }
+    );
+    const payment_id = res.data.payment_id.id;
+    const response = await axios.post(
+      "http://localhost:8000/api/v1/payment/checkout/",
+      {
+        payment_id: payment_id,
+      },
+      { withCredentials: true }
+    );
+    window.open(response.data.approved_url, "_blank");
+    navigate("/confirm");
+  };
 
   const LoadingCart = () => {
     return (
@@ -100,7 +122,7 @@ const Checkout = () => {
                   <h4 className="mb-0">Địa chỉ giao hàng</h4>
                 </div>
                 <div className="card-body">
-                  <form className="needs-validation" novalidate>
+                  <form className="needs-validation" noValidate>
                     <div className="row g-3">
                       <div className="col-sm-6 my-1">
                         <label htmlFor="firstName" className="form-label">
@@ -230,7 +252,7 @@ const Checkout = () => {
                     <div className="row gy-3">
                       <div className="col-md-6">
                         <label htmlFor="cc-name" className="form-label">
-                          Name on card
+                          Tên trên thẻ
                         </label>
                         <input
                           type="text"
@@ -240,16 +262,16 @@ const Checkout = () => {
                           required
                         />
                         <small className="text-muted">
-                          Full name as displayed on card
+                          Tên đầy đủ trên thê
                         </small>
                         <div className="invalid-feedback">
-                          Name on card is required
+                          Yêu cầu cần thiết
                         </div>
                       </div>
 
                       <div className="col-md-6">
                         <label htmlFor="cc-number" className="form-label">
-                          Credit card number
+                          Số thẻ Thanh toán
                         </label>
                         <input
                           type="text"
@@ -258,14 +280,12 @@ const Checkout = () => {
                           placeholder=""
                           required
                         />
-                        <div className="invalid-feedback">
-                          Credit card number is required
-                        </div>
+                        <div className="invalid-feedback">Yêu cầu phải có</div>
                       </div>
 
                       <div className="col-md-3">
                         <label htmlFor="cc-expiration" className="form-label">
-                          Expiration
+                          Hạn sử dụng
                         </label>
                         <input
                           type="text"
@@ -274,9 +294,7 @@ const Checkout = () => {
                           placeholder=""
                           required
                         />
-                        <div className="invalid-feedback">
-                          Expiration date required
-                        </div>
+                        <div className="invalid-feedback">Ngày hết hạn</div>
                       </div>
 
                       <div className="col-md-3">
@@ -290,22 +308,18 @@ const Checkout = () => {
                           placeholder=""
                           required
                         />
-                        <div className="invalid-feedback">
-                          Security code required
-                        </div>
+                        <div className="invalid-feedback">Mã bảo mật</div>
                       </div>
                     </div>
 
                     <hr className="my-4" />
-
-                    <button
-                      className="w-100 btn btn-primary "
-                      type="submit"
-                      disabled
-                    >
-                      Continue to checkout
-                    </button>
                   </form>
+                  <button
+                    className="w-100 btn btn-primary "
+                    onClick={CheckoutFuncHandler}
+                  >
+                    Tiếp tục thanh toán
+                  </button>
                 </div>
               </div>
             </div>
