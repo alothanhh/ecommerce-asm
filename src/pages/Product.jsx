@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Link, useParams } from "react-router-dom";
-import Marquee from "react-fast-marquee";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux/action";
-
+import Marquee from "react-fast-marquee";
 import { Footer, Navbar } from "../components";
+import axios from "axios";
 
 const Product = () => {
+  const [currentUser, setCurrentUser] = useState(() => {
+    const user = localStorage.getItem("userProfile");
+    if (user) {
+      return true;
+    }
+    return false;
+  });
+
+  const navigate = useNavigate();
   const { id } = useParams();
   const [product, setProduct] = useState([]);
   const [similarProducts, setSimilarProducts] = useState([]);
@@ -16,31 +26,43 @@ const Product = () => {
 
   const dispatch = useDispatch();
 
-  const addProduct = (product) => {
+  const changeProduct = (product) => {
     dispatch(addCart(product));
+  };
+
+  const addProduct = async (product) => {
+    try {
+      await axios.post(
+        "http://localhost:8000/api/v1/productservice/product/addcarditem/",
+        { product_id: product.product_id, quantity: product.quantity },
+        { withCredentials: true }
+      );
+    } catch (error) {
+      alert("Xin hãy đăng nhập trước khi mua hàng!");
+      navigate("/login");
+    }
+    changeProduct();
   };
 
   useEffect(() => {
     const getProduct = async () => {
       setLoading(true);
       setLoading2(true);
-      const response = await fetch(`https://mocki.io/v1/4a7ee945-a8af-4e8c-bed3-9ce592c0544e`);
+      const response = await fetch(
+        `http://localhost:8000/api/v1/productservice/product/${id}/`
+      );
       const data = await response.json();
-      const numericId = parseInt(id, 10);
-      const product = data.find((item) => item.id === numericId);
-      // setFilter(updatedList);
-      setProduct(product);
+      setProduct(data);
       setLoading(false);
-      // const response2 = await fetch(
-      //   `https://fakestoreapi.com/products/category/${data.category}`
-      // );
-      // const data2 = await response2.json();
-      const listSimilarProduct = data.filter((item) => item.category === product.category);
-      setSimilarProducts(listSimilarProduct);
+      const response2 = await fetch(
+        `http://localhost:8000/api/v1/productservice/product/category/${data.category_id}/`
+      );
+      const data2 = await response2.json();
+      setSimilarProducts(data2);
       setLoading2(false);
       window.scrollTo({
         top: 0,
-        behavior: 'auto' // Hoặc 'auto' để cuộn mà không có hiệu ứng mượt mà
+        behavior: "auto",
       });
     };
     getProduct();
@@ -77,30 +99,35 @@ const Product = () => {
             <div className="col-md-6 col-sm-12 py-3">
               <img
                 className="img-fluid"
-                src={product.image}
-                alt={product.title}
+                src={product.image_url}
+                alt={product.name}
                 width="400px"
                 height="400px"
               />
             </div>
             <div className="col-md-6 col-md-6 py-5">
-              <h4 className="text-uppercase text-muted">{product.category}</h4>
-              <h1 className="display-5">{product.title}</h1>
+              <h4 className="text-uppercase text-muted">
+                {product.category_name}
+              </h4>
+              <h1 className="display-5">{product.name}</h1>
               <p className="lead">
-                {product.rating && product.rating.rate}{" "}
-                <i className="fa fa-star"></i>
+                {Math.floor(Math.random() * 5)} <i className="fa fa-star"></i>
               </p>
               <h3 className="display-6  my-4">{product.price} đ</h3>
               <p className="lead">{product.description}</p>
               <button
                 className="btn btn-outline-dark"
-                onClick={() => addProduct(product)}
+                onClick={() =>
+                  addProduct({ product_id: product.id, quantity: 1 })
+                }
               >
                 Thêm vào Giỏ hàng
               </button>
-              <Link to="/cart" className="btn btn-dark mx-3">
-                Đi tới Giỏ hàng
-              </Link>
+              {currentUser && (
+                <Link to="/cart" className="btn btn-dark mx-3">
+                  Đi tới Giỏ hàng
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -141,15 +168,13 @@ const Product = () => {
                 <div key={item.id} className="card mx-4 text-center">
                   <img
                     className="card-img-top p-3"
-                    src={item.image}
+                    src={item.image_url}
                     alt="Card"
                     height={300}
                     width={300}
                   />
                   <div className="card-body">
-                    <h5 className="card-title">
-                      {item.title.substring(0, 15)}...
-                    </h5>
+                    <h5 className="card-title">{item.name}...</h5>
                   </div>
                   <ul className="list-group list-group-flush">
                     <li className="list-group-item lead">${product.price}</li>
@@ -163,7 +188,9 @@ const Product = () => {
                     </Link>
                     <button
                       className="btn btn-dark m-1"
-                      onClick={() => addProduct(item)}
+                      onClick={() =>
+                        addProduct({ product_id: item.id, quantity: 1 })
+                      }
                     >
                       Thêm vào Giỏ hàng
                     </button>
@@ -183,12 +210,8 @@ const Product = () => {
         <div className="row">{loading ? <Loading /> : <ShowProduct />}</div>
         <div className="row my-5 py-5">
           <div className="d-none d-md-block">
-          <h2 className="">Bạn có thể Thích</h2>
-            <Marquee
-              pauseOnHover={true}
-              pauseOnClick={true}
-              speed={50}
-            >
+            <h2 className="">Bạn có thể Thích</h2>
+            <Marquee pauseOnHover={true} pauseOnClick={true} speed={50}>
               {loading2 ? <Loading2 /> : <ShowSimilarProduct />}
             </Marquee>
           </div>

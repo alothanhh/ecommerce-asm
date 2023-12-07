@@ -1,19 +1,90 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Footer, Navbar } from "../components";
-import { useSelector, useDispatch } from "react-redux";
 import { addCart, delCart } from "../redux/action";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Cart = () => {
   const state = useSelector((state) => state.handleCart);
   const dispatch = useDispatch();
+  const [currentUser, setCurrentUser] = useState(() => {
+    const user = localStorage.getItem("userProfile");
+    if (user) {
+      return true;
+    }
+    return false;
+  });
+  const AddProductFunc = (product) => {
+    dispatch(addCart(product));
+  };
+  const RemoveProductFunc = (product) => {
+    dispatch(delCart(product));
+  };
+
+  const [total, setTotal] = useState(0);
+  const [listCardItem, setListCardItem] = useState([]);
+  useEffect(() => {
+    const shoppingSession = async () => {
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/productservice/product/shoppingsession",
+        { withCredentials: true }
+      );
+      setTotal(response.data.total);
+    };
+    const listCardItemFunc = async () => {
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/productservice/product/carditem/",
+        { withCredentials: true }
+      );
+      setListCardItem(response.data);
+    };
+
+    if (currentUser) shoppingSession();
+    listCardItemFunc();
+  }, [currentUser, state]);
+
+  const removeItem = async (cartitem_id, quantity) => {
+    if (quantity < 0) quantity = 0;
+    if (quantity === 0) {
+      await axios.delete(
+        `http://localhost:8000/api/v1/productservice/product/carditem/${cartitem_id}/`,
+        { withCredentials: true }
+      );
+    } else {
+      await axios.put(
+        `http://localhost:8000/api/v1/productservice/product/carditem/${cartitem_id}/`,
+        {
+          id: cartitem_id,
+          quantity: quantity,
+        },
+        { withCredentials: true }
+      );
+    }
+    RemoveProductFunc();
+  };
+
+  const addItem = async (cartitem_id, quantity) => {
+    await axios.put(
+      `http://localhost:8000/api/v1/productservice/product/carditem/${cartitem_id}/`,
+      {
+        id: cartitem_id,
+        quantity: quantity,
+      },
+      { withCredentials: true }
+    );
+    AddProductFunc();
+  };
 
   const EmptyCart = () => {
     return (
       <div className="container">
         <div className="row">
           <div className="col-md-12 py-5 bg-light text-center">
-            <h4 className="p-3 display-5">Giỏ hàng bạn đang không có mặt hàng nào</h4>
+            <h4 className="p-3 display-5">
+              Giỏ hàng bạn đang không có mặt hàng nào
+            </h4>
             <Link to="/" className="btn  btn-outline-dark mx-4">
               <i className="fa fa-arrow-left"></i> Tiếp tục mua sắm
             </Link>
@@ -23,23 +94,16 @@ const Cart = () => {
     );
   };
 
-  const addItem = (product) => {
-    dispatch(addCart(product));
-  };
-  const removeItem = (product) => {
-    dispatch(delCart(product));
-  };
-
   const ShowCart = () => {
     let subtotal = 0;
     let shipping = 15000;
     let totalItems = 0;
-    state.map((item) => {
-      return (subtotal += item.price * item.qty);
+    listCardItem.map((item) => {
+      return (subtotal += item.product_id.price * item.quantity);
     });
 
-    state.map((item) => {
-      return (totalItems += item.qty);
+    listCardItem.map((item) => {
+      return (totalItems += item.quantity);
     });
     return (
       <>
@@ -52,7 +116,7 @@ const Cart = () => {
                     <h5 className="mb-0">Danh sách sản phẩm trong giỏ hàng</h5>
                   </div>
                   <div className="card-body">
-                    {state.map((item) => {
+                    {listCardItem.map((item) => {
                       return (
                         <div key={item.id}>
                           <div className="row d-flex align-items-center">
@@ -62,9 +126,8 @@ const Cart = () => {
                                 data-mdb-ripple-color="light"
                               >
                                 <img
-                                  src={item.image}
-                                  // className="w-100"
-                                  alt={item.title}
+                                  src={item.product_id.image_url}
+                                  alt={item.product_id.name}
                                   width={100}
                                   height={75}
                                 />
@@ -73,10 +136,8 @@ const Cart = () => {
 
                             <div className="col-lg-5 col-md-6">
                               <p>
-                                <strong>{item.title}</strong>
+                                <strong>{item.product_id.name}</strong>
                               </p>
-                              {/* <p>Color: blue</p>
-                              <p>Size: M</p> */}
                             </div>
 
                             <div className="col-lg-4 col-md-6">
@@ -87,18 +148,27 @@ const Cart = () => {
                                 <button
                                   className="btn px-3"
                                   onClick={() => {
-                                    removeItem(item);
+                                    removeItem(item.id, item.quantity - 1);
                                   }}
                                 >
                                   <i className="fas fa-minus"></i>
                                 </button>
-
-                                <p className="mx-5">{item.qty}</p>
+                                <div
+                                  className="mx-5"
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <p style={{ marginTop: "1rem" }}>
+                                    {item.quantity}
+                                  </p>
+                                </div>
 
                                 <button
                                   className="btn px-3"
                                   onClick={() => {
-                                    addItem(item);
+                                    addItem(item.id, item.quantity + 1);
                                   }}
                                 >
                                   <i className="fas fa-plus"></i>
@@ -107,8 +177,10 @@ const Cart = () => {
 
                               <p className="text-start text-md-center">
                                 <strong>
-                                  <span className="text-muted">{item.qty}</span>{" "}
-                                  x ${item.price}
+                                  <span className="text-muted">
+                                    {item.quantity}
+                                  </span>{" "}
+                                  x ${item.product_id.price}
                                 </strong>
                               </p>
                             </div>
@@ -129,7 +201,8 @@ const Cart = () => {
                   <div className="card-body">
                     <ul className="list-group list-group-flush">
                       <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                        Sản phẩm ({totalItems})<span>{Math.round(subtotal)} đ</span>
+                        Sản phẩm ({totalItems})
+                        <span>{Math.round(subtotal)} đ</span>
                       </li>
                       <li className="list-group-item d-flex justify-content-between align-items-center px-0">
                         Phí giao hàng (Tạm tính)
@@ -167,7 +240,13 @@ const Cart = () => {
       <div className="container my-3 py-3">
         <h1 className="text-center">Giỏ hàng</h1>
         <hr />
-        {state.length > 0 ? <ShowCart /> : <EmptyCart />}
+        {!currentUser ? (
+          <EmptyCart />
+        ) : currentUser && total !== 0 ? (
+          <ShowCart />
+        ) : (
+          <EmptyCart />
+        )}
       </div>
       <Footer />
     </>

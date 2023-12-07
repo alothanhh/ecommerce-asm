@@ -1,52 +1,133 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-
+import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Navbar = () => {
-    const state = useSelector(state => state.handleCart)
-    return (
-        <nav className="navbar navbar-expand-lg navbar-white bg-white py-3 sticky-top">
-            <div className="container">
-                <NavLink className="navbar-brand fw-bold fs-4 px-2" to="/">
-                    <img src="./assets/icon.jpg" alt="Sourique corner" style={{ width: '200px', height: 'auto' }} />
+  const state = useSelector((state) => state.handleCart);
+  const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(() => {
+    const user = localStorage.getItem("userProfile");
+    if (user) {
+      return true;
+    }
+    return false;
+  });
+
+  const [total, setTotal] = useState();
+  useEffect(() => {
+    const shoppingSession = async () => {
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/productservice/product/shoppingsession",
+        { withCredentials: true }
+      );
+      setTotal(response.data.total);
+    };
+    if (currentUser) shoppingSession();
+  }, [currentUser, state]);
+  const HandleLogout = async () => {
+    setCurrentUser(false);
+    localStorage.clear();
+    navigate("/login");
+    try {
+      await axios.post("http://localhost:8000/api/v1/users/logout/", null, {
+        withCredentials: true,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <nav className="navbar navbar-expand-lg navbar-white bg-white py-3 sticky-top">
+      <div className="container">
+        <NavLink className="navbar-brand fw-bold fs-4 px-2" to="/">
+          <img
+            src="/assets/icon.jpg"
+            alt="Sourique corner"
+            style={{ width: "200px", height: "auto" }}
+          />
+        </NavLink>
+        <button
+          className="navbar-toggler mx-2"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav m-auto my-2 text-center">
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/">
+                Trang chủ{" "}
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/product">
+                Sản phẩm
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/about">
+                Về chúng tôi
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/contact">
+                Liên hệ
+              </NavLink>
+            </li>
+            {currentUser && (
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/checkerror">
+                  Kiểm lỗi
                 </NavLink>
-                <button className="navbar-toggler mx-2" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
+              </li>
+            )}
+            {currentUser && (
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/chatbox">
+                  Tư vấn KH
+                </NavLink>
+              </li>
+            )}
+          </ul>
+          <div className="buttons text-center">
+            {!currentUser && (
+              <>
+                <NavLink to="/login" className="btn btn-outline-dark m-2">
+                  <i className="fa fa-sign-in-alt mr-1"></i> Đăng nhập
+                </NavLink>
+                <NavLink to="/register" className="btn btn-outline-dark m-2">
+                  <i className="fa fa-user-plus mr-1"></i> Đăng ký
+                </NavLink>
+              </>
+            )}
+            {currentUser && (
+              <>
+                <button
+                  onClick={HandleLogout}
+                  className="btn btn-outline-dark m-2"
+                >
+                  <i className="fa fa-sign-out-alt mr-1"></i> Đăng xuất
                 </button>
+                <NavLink to="/cart" className="btn btn-outline-dark m-2">
+                  <i className="fa fa-cart-shopping mr-1"></i> Giỏ hàng ({total}
+                  ){" "}
+                </NavLink>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
 
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav m-auto my-2 text-center">
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/">Trang chủ </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/product">Sản phẩm</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/about">Về chúng tôi</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/contact">Liên hệ</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/checkerror">Kiểm lỗi</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/chatbox">Tư vấn KH</NavLink>
-                        </li>
-                    </ul>
-                    <div className="buttons text-center">
-                        <NavLink to="/login" className="btn btn-outline-dark m-2"><i className="fa fa-sign-in-alt mr-1"></i> Đăng nhập</NavLink>
-                        <NavLink to="/register" className="btn btn-outline-dark m-2"><i className="fa fa-user-plus mr-1"></i> Đăng ký</NavLink>
-                        <NavLink to="/cart" className="btn btn-outline-dark m-2"><i className="fa fa-cart-shopping mr-1"></i> Giỏ hàng ({state.length}) </NavLink>
-                    </div>
-                </div>
-
-
-            </div>
-        </nav>
-    )
-}
-
-export default Navbar
+export default Navbar;
